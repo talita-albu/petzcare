@@ -17,7 +17,7 @@ final class SettingsViewModel: ObservableObject {
 
 struct SettingsView: View {
     @StateObject private var viewModel = SettingsViewModel()
-    @Binding var showSignInView: Bool
+    @Binding var showingSettingsView: Bool
     
     var body: some View {
         List {
@@ -25,7 +25,7 @@ struct SettingsView: View {
                 Task {
                     do {
                         try viewModel.logOut()
-                        showSignInView = true
+                        showingSettingsView = false
                     } catch {
                         
                     }
@@ -39,7 +39,7 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            SettingsView(showSignInView: .constant(false))
+            SettingsView(showingSettingsView: .constant(true))
         }
     }
 }

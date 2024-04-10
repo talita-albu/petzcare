@@ -35,10 +35,6 @@ final class SignInEmailViewModel: ObservableObject {
 
         let _ = try await FirebAuth.shared.signInUser(email: email, password: password)
     }
-    
-    func signInGoogle() async throws {
-        let _ = try await FirebAuth.shared.signInUser(email: email, password: password)
-    }
 }
 
 struct LoginView: View {
@@ -108,11 +104,14 @@ struct LoginView: View {
             
             GoogleSiginBtn {
                 FirebAuth.shared.signinWithGoogle(presenting: getRootViewController()) {error in
-                    viewModel.showAlert = true
-                    viewModel.alertTitle = "Attention"
-                    viewModel.alertMessage = "\(error)"
+                    if let error = error {
+                        viewModel.showAlert = true
+                        viewModel.alertTitle = "Attention"
+                        viewModel.alertMessage = "\(error)"
+                    } else {
+                        showSignInView = false
+                    }
                 }
-                showSignInView = false
             }.alert(isPresented: $viewModel.showAlert, content: {
                 getAlert()
             })

@@ -40,7 +40,7 @@ struct PetsList: View {
     @Binding var showSignInView: Bool
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List(viewModel.pets) { pet in
                     
@@ -111,8 +111,8 @@ struct PetsList: View {
                         getAlert()
                     })
                     
-                    NavigationLink {
-                            SettingsView(showSignInView: $showSignInView)
+                    Button {
+                        self.showingSettingsView.toggle()
                     } label: {
                         Text("Settings")
                             .font(.headline)
@@ -124,7 +124,10 @@ struct PetsList: View {
                     }
                 }.padding()
             }
-            .navigationBarTitle("Pet Registry")
+            .navigationTitle("Pet Registry")
+            .navigationDestination(isPresented: $showingSettingsView) {
+                SettingsView(showingSettingsView: $showingSettingsView)
+            }
         }
         .onAppear {
             do {

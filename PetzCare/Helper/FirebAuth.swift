@@ -82,6 +82,8 @@ final class FirebAuth {
                     completion(error)
                     return
                 }
+                
+                completion(nil)
             }
         }
     }
