@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var showLoginView = false
+    @State private var showSignInView = false
     
     var body: some View {
         ZStack {
-            NavigationStack {
-                SettingsView(showLoginView: $showLoginView)
+            if !showSignInView {
+                NavigationStack {
+                    PetsList(showSignInView: $showSignInView)
+                }
             }
         }
         .onAppear{
             let authUser = try? FirebAuth.shared.getAuthenticatedUser()
-            self.showLoginView = authUser == nil
+            self.showSignInView = authUser == nil
         }
-        .fullScreenCover(isPresented: $showLoginView){
+        .fullScreenCover(isPresented: $showSignInView){
             NavigationStack {
-                LoginView(showLoginView: $showLoginView)
+                LoginView(showSignInView: $showSignInView)
             }
         }
     }

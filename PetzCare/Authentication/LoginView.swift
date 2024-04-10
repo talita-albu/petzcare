@@ -52,7 +52,7 @@ final class SignInEmailViewModel: ObservableObject {
 
 struct LoginView: View {
     @StateObject private var viewModel = SignInEmailViewModel()
-    @Binding var showLoginView: Bool
+    @Binding var showSignInView: Bool
     
     var body: some View {
         VStack {
@@ -71,7 +71,7 @@ struct LoginView: View {
                     Task {
                         do {
                             try await viewModel.signIn()
-                            showLoginView = false
+                            showSignInView = false
                         } catch {
                             viewModel.showAlert = true
                             viewModel.alertTitle = "Attention"
@@ -92,7 +92,7 @@ struct LoginView: View {
                     Task {
                         do {
                             try await viewModel.signUp()
-                            showLoginView = false
+                            showSignInView = false
                         } catch {
                             viewModel.showAlert = true
                             viewModel.alertTitle = "Attention"
@@ -121,7 +121,7 @@ struct LoginView: View {
                     viewModel.alertTitle = "Attention"
                     viewModel.alertMessage = "\(error)"
                 }
-                showLoginView = false
+                showSignInView = false
             }.alert(isPresented: $viewModel.showAlert, content: {
                 getAlert()
             })
@@ -141,7 +141,7 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            LoginView(showLoginView: .constant(true))
+            LoginView(showSignInView: .constant(true))
         }
     }
 }
