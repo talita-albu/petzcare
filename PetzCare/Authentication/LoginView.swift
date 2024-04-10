@@ -20,8 +20,7 @@ final class SignInEmailViewModel: ObservableObject {
         guard !email.isEmpty, !password.isEmpty else {
             showAlert = true
             alertTitle = "Attention"
-            alertMessage = "Email and Password must be valid."
-            return
+            throw AuthenticationError.notPassedInformationToLog("Email and Password must be valid.")
         }
         
         let _ = try await FirebAuth.shared.createUser(email: email, password: password)
@@ -31,21 +30,13 @@ final class SignInEmailViewModel: ObservableObject {
         guard !email.isEmpty, !password.isEmpty else {
             showAlert = true
             alertTitle = "Attention"
-            alertMessage = "Email and Password must be valid."
-            return
+            throw AuthenticationError.notPassedInformationToLog("Email and Password must be valid.")
         }
 
         let _ = try await FirebAuth.shared.signInUser(email: email, password: password)
     }
     
     func signInGoogle() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
-            showAlert = true
-            alertTitle = "Attention"
-            alertMessage = "Email and Password must be valid."
-            return
-        }
-
         let _ = try await FirebAuth.shared.signInUser(email: email, password: password)
     }
 }

@@ -12,6 +12,7 @@ import GoogleSignIn
 
 enum AuthenticationError: Error {
     case userNotLogged
+    case notPassedInformationToLog(String)
 }
 
 struct AuthDataResultModel {

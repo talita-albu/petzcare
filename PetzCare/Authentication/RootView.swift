@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RootView: View {
-    @State private var showSignInView = false
+    @State private var showSignInView = true
     
     var body: some View {
         ZStack {

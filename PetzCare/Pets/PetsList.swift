@@ -43,11 +43,34 @@ struct PetsList: View {
         NavigationView {
             VStack {
                 List(viewModel.pets) { pet in
-                    VStack(alignment: .leading) {
-                        Text("Name: \(pet.name)")
-                        Text("Species: \(pet.type)")
-                        Text("Birth Date: \(formattedDate(pet.birthDate))")
+                    
+                    HStack {
+                        Image(pet.type)
+                            .resizable()
+                            .font(.largeTitle)
+                            .bold()
+                            .symbolRenderingMode(.monochrome)
+                            .scaledToFit()
+                            .frame(width: 50, height: 50)
+                        VStack(alignment: .leading) {
+                            Text(pet.name)
+                                .font(.title)
+                                .bold()
+                            Text(pet.type)
+                        }
+                        Spacer()
+                        Image(systemName: "ellipsis")
+                            .resizable()
+                            .symbolRenderingMode(.monochrome)
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+
+
                     }
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.white)
+                    .cornerRadius(16)
                 }
                 
                 HStack {
@@ -89,16 +112,16 @@ struct PetsList: View {
                     })
                     
                     NavigationLink {
-                        SettingsView(showSignInView: $showSignInView)
+                            SettingsView(showSignInView: $showSignInView)
                     } label: {
-                            Text("Settings")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(height: 55)
-                                .frame(maxWidth: .infinity)
-                                .background(Color.indigo)
-                                .cornerRadius(10)
-                        }
+                        Text("Settings")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(height: 55)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.indigo)
+                            .cornerRadius(10)
+                    }
                 }.padding()
             }
             .navigationBarTitle("Pet Registry")
