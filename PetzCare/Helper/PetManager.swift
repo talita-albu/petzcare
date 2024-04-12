@@ -18,16 +18,32 @@ final class PetManager {
         Firestore.firestore().collection("pets").addDocument(data: [
             "name": newPet.name,
             "birthDate": newPet.birthDate,
-            "species": newPet.type,
+            "species": newPet.species,
             "gender": newPet.gender,
             "userID": user
         ])
     }
     
+    func updatePet(petToUpdate: Pet, user: String) throws {
+        var petFromDatase = Firestore.firestore().collection("pets").document(petToUpdate.id)
+        petFromDatase.updateData([
+            "name": petToUpdate.name,
+            "birthDate": petToUpdate.birthDate,
+            "species": petToUpdate.species,
+            "gender": petToUpdate.gender,
+            "userID": user
+        ])
+    }
+    
+    func deletePet(petToDelete: Pet) throws {
+        var petFromDatase = Firestore.firestore().collection("pets").document(petToDelete.id)
+        petFromDatase.delete()
+    }
+    
     func loadPets(userID: String, completion: @escaping ([Pet]) -> Void) {
         var pets: [Pet] = []
         
-        var db = Firestore.firestore()
+        let db = Firestore.firestore()
         var petsCollection: CollectionReference { db.collection("pets") }
         let query = petsCollection.whereField("userID", isEqualTo: userID)
 
@@ -42,7 +58,7 @@ final class PetManager {
                 let data = document.data()
                 let id = document.documentID
                 let name = data["name"] as? String ?? ""
-                let type = data["species"] as? String ?? ""
+                let species = data["species"] as? String ?? ""
                 let gender = data["gender"] as? String ?? ""
                 let userID = data["userID"] as? String ?? ""
                 
@@ -50,7 +66,7 @@ final class PetManager {
                 let birthDateTimestamp = data["birthDate"] as? Timestamp ?? Timestamp()
                 let birthDate = birthDateTimestamp.dateValue()
                 
-                return Pet(id: id, name: name, birthDate: birthDate, type: type, gender: gender, userID: userID)
+                return Pet(id: id, name: name, birthDate: birthDate, species: species, gender: gender, userID: userID)
             }
             
             completion(pets)

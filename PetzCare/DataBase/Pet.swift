@@ -7,11 +7,24 @@
 
 import Foundation
 
-struct Pet: Identifiable {
+struct Pet: Identifiable, Codable {
     var id: String
     var name: String
     var birthDate: Date
-    var type: String
+    var species: String
     var gender: String
     var userID: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case birthDate
+        case species
+        case gender
+        case userID
+    }
+    
+    static func ==(lhs: Pet, rhs: Pet) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

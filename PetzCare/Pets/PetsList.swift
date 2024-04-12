@@ -18,6 +18,8 @@ final class PetViewModel: ObservableObject {
     
     @Published var pets: [Pet] = []
     
+    @Published var newPet = Pet(id: "", name: "", birthDate: Date(), species: "dog", gender: "male", userID: "0")
+    
     func loadCurentUser() throws {
         self.user = try FirebAuth.shared.getAuthenticatedUser()
     }
@@ -27,7 +29,31 @@ final class PetViewModel: ObservableObject {
         PetManager.shared.loadPets(userID: user?.uid ?? "0"){ pets in
             self.pets = pets
         }
-        
+    }
+    
+    func maintainPet(petToWork: Pet) {
+        do {
+            try loadCurentUser()
+            let currentUser = self.user?.uid ?? "0"
+            
+            if petToWork.id.isEmpty {
+                try PetManager.shared.savePet(newPet: petToWork, user: currentUser)
+            } else {
+                try PetManager.shared.updatePet(petToUpdate: petToWork, user: currentUser)
+            }
+            
+            try loadPets()
+            
+        } catch {
+            alertTitle = "Alert"
+            alertMessage = "Pet not saved"
+            showAlert = true
+        }
+    }
+    
+    func deletePet(index: Int) throws {
+        let pet = self.pets[index]
+        try PetManager.shared.deletePet(petToDelete: pet)
     }
 }
     
@@ -35,76 +61,59 @@ struct PetsList: View {
     
     @State private var showingAddPetView = false
     @State private var showingSettingsView = false
-    @State private var newPet = Pet(id: "", name: "", birthDate: Date(), type: "dog", gender: "male", userID: "0")
     @StateObject private var viewModel = PetViewModel()
     @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationView {
             VStack {
-                List(viewModel.pets) { pet in
-                    HStack {
-                        Image(pet.type)
-                            .resizable()
-                            .font(.largeTitle)
-                            .bold()
-                            .symbolRenderingMode(.monochrome)
-                            .scaledToFit()
-                            .frame(width: 50, height: 50)
-                        VStack(alignment: .leading) {
-                            Text(pet.name)
-                                .font(.title)
+                List {
+                    ForEach(viewModel.pets) { pet in
+                        HStack {
+                            Image(pet.species)
+                                .resizable()
+                                .font(.largeTitle)
                                 .bold()
-                            Text(pet.type)
+                                .symbolRenderingMode(.monochrome)
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                            VStack(alignment: .leading) {
+                                Text(pet.name)
+                                    .font(.title)
+                                    .bold()
+                                Text(pet.species)
+                            }
+                            Spacer()
+                            Button {
+                                viewModel.newPet.id = pet.id
+                                viewModel.newPet.gender = pet.gender
+                                viewModel.newPet.name = pet.name
+                                viewModel.newPet.species = pet.species
+                                viewModel.newPet.userID = pet.userID
+                                viewModel.newPet.birthDate = pet.birthDate
+                                self.showingAddPetView.toggle()
+                            } label: {
+                                Image(systemName: "pencil")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(height: 30)
+                                    .frame(width: 30)
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                            }.sheet(isPresented: $showingAddPetView) {
+                                AddPetView(showingAddPetView: $showingAddPetView, newPet: $viewModel.newPet)
+                            }.alert(isPresented: $viewModel.showAlert, content: {
+                                getAlert()
+                            })
                         }
-                        Spacer()
-                        Button {
-                            newPet.id = pet.id
-                            newPet.gender = pet.gender
-                            newPet.name = pet.name
-                            newPet.type = pet.type
-                            newPet.userID = pet.userID
-                            newPet.birthDate = pet.birthDate
-                            self.showingAddPetView.toggle()
-                        } label: {
-                            Image(systemName: "pencil")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(height: 30)
-                                .frame(width: 30)
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }.sheet(isPresented: $showingAddPetView) {
-                            AddPetView(showingAddPetView: $showingAddPetView, newPet: $newPet)
-                                .onDisappear {
-                                    if !self.newPet.name.isEmpty {
-                                        //                                        do {
-                                        //                                            try viewModel.loadCurentUser()
-                                        //                                            try PetManager.shared.savePet(newPet: self.newPet, user: viewModel.user?.uid ?? "0")
-                                        //                                        } catch {
-                                        //                                            viewModel.alertTitle = "Alert"
-                                        //                                            viewModel.alertMessage = "Pet not saved"
-                                        //                                            viewModel.showAlert = true
-                                        //                                        }
-                                        
-                                        do {
-                                            try viewModel.loadPets()
-                                        } catch {
-                                            viewModel.alertTitle = "Alert"
-                                            viewModel.alertMessage = "Pets not loaded"
-                                            viewModel.showAlert = true
-                                        }
-                                    }
-                                }
-                        }.alert(isPresented: $viewModel.showAlert, content: {
-                            getAlert()
-                        })
-                    }
-                    .padding(.bottom, 10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.white)
-                    .cornerRadius(16)
-                }
+                        .padding(.bottom, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(.white)
+                        .cornerRadius(16)
+                    }.onDelete(perform: deleteItem)
+                }.alert(isPresented: $viewModel.showAlert, content: {
+                    getAlert()
+                })
                 
                 HStack {
                     Button {
@@ -119,42 +128,15 @@ struct PetsList: View {
                             .cornerRadius(10)
                     }
                     .sheet(isPresented: $showingAddPetView) {
-                        AddPetView(showingAddPetView: $showingAddPetView, newPet: $newPet)
+                        AddPetView(showingAddPetView: $showingAddPetView, newPet: $viewModel.newPet)
                             .onDisappear {
-                                if !self.newPet.name.isEmpty {
-                                    do {
-                                        try viewModel.loadCurentUser()
-                                        try PetManager.shared.savePet(newPet: self.newPet, user: viewModel.user?.uid ?? "0")
-                                    } catch {
-                                        viewModel.alertTitle = "Alert"
-                                        viewModel.alertMessage = "Pet not saved"
-                                        viewModel.showAlert = true
-                                    }
-                                    
-                                    do {
-                                        try viewModel.loadPets()
-                                    } catch {
-                                        viewModel.alertTitle = "Alert"
-                                        viewModel.alertMessage = "Pets not loaded"
-                                        viewModel.showAlert = true
-                                    }
+                                if !viewModel.newPet.name.isEmpty {
+                                    viewModel.maintainPet(petToWork: viewModel.newPet)
                                 }
                             }
                     }.alert(isPresented: $viewModel.showAlert, content: {
                         getAlert()
                     })
-                    
-                    //                    Button {
-                    //                        self.showingSettingsView.toggle()
-                    //                    } label: {
-                    //                        Text("Settings")
-                    //                            .font(.headline)
-                    //                            .foregroundColor(.white)
-                    //                            .frame(height: 55)
-                    //                            .frame(maxWidth: .infinity)
-                    //                            .background(Color.indigo)
-                    //                            .cornerRadius(10)
-                    //                    }
                     
                     NavigationLink {
                         SettingsView(showSignInView: $showSignInView)
@@ -193,6 +175,18 @@ struct PetsList: View {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
+    }
+    
+    func deleteItem(at offsets: IndexSet) {
+        if let index = offsets.first {
+            do {
+                try viewModel.deletePet(index: index)
+            } catch {
+                viewModel.alertTitle = "Alert"
+                viewModel.alertMessage = "Error on delete"
+                viewModel.showAlert = true
+            }
+        }
     }
 }
     

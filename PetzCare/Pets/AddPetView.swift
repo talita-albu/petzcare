@@ -20,7 +20,7 @@ struct AddPetView: View {
                 DatePicker("Birth Date", selection: $newPet.birthDate, displayedComponents: .date)
                     .datePickerStyle(WheelDatePickerStyle())
                 
-                Picker("Type", selection: $newPet.type) {
+                Picker("Species", selection: $newPet.species) {
                     Text("Dog").tag("dog")
                     Text("Cat").tag("cat")
                 }
@@ -48,7 +48,7 @@ struct AddPetView: View {
 struct AddPetView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            var newPet = Pet(id: "", name: "", birthDate: Date(), type: "dog", gender: "male", userID: "0")
+            var newPet = Pet(id: "", name: "", birthDate: Date(), species: "dog", gender: "male", userID: "0")
             AddPetView(showingAddPetView: .constant(true), newPet: .constant(newPet))
         }
     }
