@@ -25,7 +25,7 @@ final class PetManager {
     }
     
     func updatePet(petToUpdate: Pet, user: String) throws {
-        var petFromDatase = Firestore.firestore().collection("pets").document(petToUpdate.id)
+        let petFromDatase = Firestore.firestore().collection("pets").document(petToUpdate.id)
         petFromDatase.updateData([
             "name": petToUpdate.name,
             "birthDate": petToUpdate.birthDate,
@@ -36,7 +36,7 @@ final class PetManager {
     }
     
     func deletePet(petToDelete: Pet) throws {
-        var petFromDatase = Firestore.firestore().collection("pets").document(petToDelete.id)
+        let petFromDatase = Firestore.firestore().collection("pets").document(petToDelete.id)
         petFromDatase.delete()
     }
     

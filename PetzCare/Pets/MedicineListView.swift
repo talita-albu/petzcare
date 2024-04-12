@@ -1,100 +1,82 @@
 //
-//  PetsList.swift
+//  MedicineListView.swift
 //  PetzCare
 //
-//  Created by Talita Albuquerque Araújo on 09/04/24.
+//  Created by Talita Albuquerque Araújo on 12/04/24.
 //
 
 import SwiftUI
 import Firebase
 
 @MainActor
-final class PetViewModel: ObservableObject {
+final class MedicineListViewModel: ObservableObject {
     
     @Published private(set) var user: AuthDataResultModel? = nil
     @Published var showAlert = false
     @Published var alertTitle = ""
     @Published var alertMessage = ""
     
-    @Published var pets: [Pet] = []
+    @Published var medicines: [Medicine] = []
     
-    @Published var newPet = Pet(id: "", name: "", birthDate: Date(), species: "dog", gender: "male", userID: "0")
+    @Published var newMedicine = Medicine(id: "", name: "", type: "", dateToApply: Date(), wasApplied: false, duration: "", petID: "")
     
-    func loadCurentUser() throws {
-        self.user = try AuthorizationManager.shared.getAuthenticatedUser()
-    }
-    
-    func loadPets() throws {
-        try loadCurentUser()
-        PetManager.shared.loadPets(userID: user?.uid ?? "0"){ pets in
-            self.pets = pets
+    func loadMedicines(petID: String) throws {
+        MedicineManager.shared.loadMedicines(petID: petID){medicines in
+            self.medicines = medicines
         }
     }
-    
-    func clearPet() {
-        self.newPet = Pet(id: "", name: "", birthDate: Date(), species: "dog", gender: "male", userID: "0")
-    }
-    
-    func maintainPet(petToWork: Pet) {
+
+    func maintainMedicine(medicineToWork: Medicine, petId: String) {
         do {
-            try loadCurentUser()
-            let currentUser = self.user?.uid ?? "0"
-            
-            if petToWork.id.isEmpty {
-                try PetManager.shared.savePet(newPet: petToWork, user: currentUser)
+            if medicineToWork.id.isEmpty {
+                try MedicineManager.shared.saveMedicine(newMedicine: medicineToWork, petId: petId)
             } else {
-                try PetManager.shared.updatePet(petToUpdate: petToWork, user: currentUser)
+                try MedicineManager.shared.updateMedicine(medicineToUpdate: medicineToWork, petId: petId)
             }
-            
-            try loadPets()
-            
+
+            try loadMedicines(petID: petId)
+
         } catch {
             alertTitle = "Alert"
             alertMessage = "Pet not saved"
             showAlert = true
         }
     }
-    
-    func deletePet(index: Int) throws {
-        let pet = self.pets[index]
-        try PetManager.shared.deletePet(petToDelete: pet)
+
+    func deleteMedicine(index: Int) throws {
+        let medicine = self.medicines[index]
+        try MedicineManager.shared.deleteMedicine(medicineToDelete: medicine)
     }
 }
     
-struct PetsList: View {
-    @State private var showingAddPetView = false
-    @State private var showingSettingsView = false
-    @StateObject private var viewModel = PetViewModel()
-    @Binding var showSignInView: Bool
+struct MedicineListView: View {
+    @State var petId: String
+    @Binding var showingListedicineView: Bool
+    @State private var showingAddMedicineView = false
+    @StateObject private var viewModel = MedicineListViewModel()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
-                    ForEach(viewModel.pets) { pet in
+                    ForEach(viewModel.medicines) { medicine in
                         HStack {
-                            Image(pet.species)
-                                .resizable()
-                                .font(.largeTitle)
-                                .bold()
-                                .symbolRenderingMode(.monochrome)
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
                             VStack(alignment: .leading) {
-                                Text(pet.name)
+                                Text(medicine.name)
                                     .font(.title)
                                     .bold()
-                                Text(pet.species)
+                                Text(formattedDate(medicine.dateToApply))
                             }
                             Spacer()
                             Button {
-                                viewModel.newPet.id = pet.id
-                                viewModel.newPet.gender = pet.gender
-                                viewModel.newPet.name = pet.name
-                                viewModel.newPet.species = pet.species
-                                viewModel.newPet.userID = pet.userID
-                                viewModel.newPet.birthDate = pet.birthDate
-                                self.showingAddPetView.toggle()
+                                viewModel.newMedicine.id = medicine.id
+                                viewModel.newMedicine.dateToApply = medicine.dateToApply
+                                viewModel.newMedicine.name = medicine.name
+                                viewModel.newMedicine.type = medicine.type
+                                viewModel.newMedicine.wasApplied = medicine.wasApplied
+                                viewModel.newMedicine.duration = medicine.duration
+                                viewModel.newMedicine.petID = medicine.petID
+                                self.showingAddMedicineView.toggle()
                             } label: {
                                 Image(systemName: "pencil")
                                     .font(.headline)
@@ -103,8 +85,8 @@ struct PetsList: View {
                                     .frame(width: 30)
                                     .background(Color.blue)
                                     .cornerRadius(10)
-                            }.sheet(isPresented: $showingAddPetView) {
-                                AddPetView(showingAddPetView: $showingAddPetView, newPet: $viewModel.newPet)
+                            }.sheet(isPresented: $showingAddMedicineView) {
+                                AddMedicine(showingAddMedicineView: $showingAddMedicineView, newMedicine: $viewModel.newMedicine)
                             }.alert(isPresented: $viewModel.showAlert, content: {
                                 getAlert()
                             })
@@ -120,10 +102,9 @@ struct PetsList: View {
                 
                 HStack {
                     Button {
-                        viewModel.clearPet()
-                        self.showingAddPetView.toggle()
+                        self.showingAddMedicineView.toggle()
                     } label: {
-                        Text("Add Pet")
+                        Text("Add New Medicine")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(height: 55)
@@ -131,27 +112,30 @@ struct PetsList: View {
                             .background(Color.cyan)
                             .cornerRadius(10)
                     }
-                    .sheet(isPresented: $showingAddPetView) {
-                        AddPetView(showingAddPetView: $showingAddPetView, newPet: $viewModel.newPet)
+                    .sheet(isPresented: $showingAddMedicineView) {
+                        AddMedicine(showingAddMedicineView: $showingAddMedicineView, newMedicine: $viewModel.newMedicine)
                             .onDisappear {
-                                if !viewModel.newPet.name.isEmpty {
-                                    viewModel.maintainPet(petToWork: viewModel.newPet)
+                                if !viewModel.newMedicine.name.isEmpty {
+                                    viewModel.maintainMedicine(medicineToWork: viewModel.newMedicine, petId: self.petId)
                                 }
                             }
                     }.alert(isPresented: $viewModel.showAlert, content: {
                         getAlert()
                     })
-                    
+
                 }.padding()
             }
-            .navigationTitle("Pet Registry")
+            .navigationTitle("Medicine Registry")
+            .navigationBarItems(trailing: Button("Cancel") {
+                self.showingListedicineView.toggle()
+            })
         }
         .onAppear {
             do {
-                try viewModel.loadPets()
+                try viewModel.loadMedicines(petID: self.petId)
             } catch {
                 viewModel.alertTitle = "Alert"
-                viewModel.alertMessage = "Pets not loaded"
+                viewModel.alertMessage = "Medicines not loaded"
                 viewModel.showAlert = true
             }
         }
@@ -172,7 +156,7 @@ struct PetsList: View {
     func deleteItem(at offsets: IndexSet) {
         if let index = offsets.first {
             do {
-                try viewModel.deletePet(index: index)
+                try viewModel.deleteMedicine(index: index)
             } catch {
                 viewModel.alertTitle = "Alert"
                 viewModel.alertMessage = "Error on delete"
@@ -181,12 +165,9 @@ struct PetsList: View {
         }
     }
 }
-    
-struct PetsList_Previews: PreviewProvider {
+
+struct MedicineListView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
-            PetsList(showSignInView: .constant(false))
-        }
+        MedicineListView(petId: "0", showingListedicineView: .constant(true))
     }
 }
-

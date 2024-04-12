@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddPetView: View {
+    @State private var showingAddMedicineView = false
     @Binding var showingAddPetView: Bool
     @Binding var newPet: Pet
     
@@ -36,6 +37,23 @@ struct AddPetView: View {
                     self.showingAddPetView.toggle()
                 }
                 .padding()
+                
+                if !$newPet.id.isEmpty {
+                    Button {
+                        self.showingAddMedicineView.toggle()
+                    } label: {
+                        Text("Add Medicine")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(height: 55)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.cyan)
+                            .cornerRadius(10)
+                    }
+                    .sheet(isPresented: $showingAddMedicineView) {
+                        MedicineListView(petId: newPet.id, showingListedicineView: $showingAddMedicineView)
+                    }
+                }
             }
             .navigationBarTitle("Add Pet")
             .navigationBarItems(trailing: Button("Cancel") {

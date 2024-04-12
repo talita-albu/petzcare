@@ -29,6 +29,10 @@
 		23A1EA142BC6024500AF3360 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 23A1EA132BC6024500AF3360 /* FirebaseFirestoreSwift */; };
 		23A1EA162BC6059600AF3360 /* PetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA152BC6059600AF3360 /* PetManager.swift */; };
 		23A1EA1E2BC9B65600AF3360 /* PetzInitialControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA1D2BC9B65600AF3360 /* PetzInitialControl.swift */; };
+		23A1EA202BC9B92B00AF3360 /* MedicineListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA1F2BC9B92B00AF3360 /* MedicineListView.swift */; };
+		23A1EA222BC9B97900AF3360 /* Medicine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA212BC9B97900AF3360 /* Medicine.swift */; };
+		23A1EA242BC9BA0C00AF3360 /* MedicineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA232BC9BA0C00AF3360 /* MedicineManager.swift */; };
+		23A1EA262BC9C58400AF3360 /* AddMedicine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA252BC9C58400AF3360 /* AddMedicine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +55,10 @@
 		23A1EA0A2BC5FD8E00AF3360 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		23A1EA152BC6059600AF3360 /* PetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetManager.swift; sourceTree = "<group>"; };
 		23A1EA1D2BC9B65600AF3360 /* PetzInitialControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetzInitialControl.swift; sourceTree = "<group>"; };
+		23A1EA1F2BC9B92B00AF3360 /* MedicineListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineListView.swift; sourceTree = "<group>"; };
+		23A1EA212BC9B97900AF3360 /* Medicine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medicine.swift; sourceTree = "<group>"; };
+		23A1EA232BC9BA0C00AF3360 /* MedicineManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineManager.swift; sourceTree = "<group>"; };
+		23A1EA252BC9C58400AF3360 /* AddMedicine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +129,7 @@
 				23A1E9FB2BC3544A00AF3360 /* GoogleSigninBtn.swift */,
 				23A1EA022BC355B100AF3360 /* +View.swift */,
 				23A1EA152BC6059600AF3360 /* PetManager.swift */,
+				23A1EA232BC9BA0C00AF3360 /* MedicineManager.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -139,6 +148,8 @@
 			children = (
 				23A1EA052BC5FBFD00AF3360 /* PetsList.swift */,
 				23A1EA0A2BC5FD8E00AF3360 /* AddPetView.swift */,
+				23A1EA1F2BC9B92B00AF3360 /* MedicineListView.swift */,
+				23A1EA252BC9C58400AF3360 /* AddMedicine.swift */,
 			);
 			path = Pets;
 			sourceTree = "<group>";
@@ -147,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				23A1EA082BC5FCD900AF3360 /* Pet.swift */,
+				23A1EA212BC9B97900AF3360 /* Medicine.swift */,
 			);
 			path = DataBase;
 			sourceTree = "<group>";
@@ -246,14 +258,18 @@
 				23A1E9EA2BC31BB100AF3360 /* AuthorizationManager.swift in Sources */,
 				23A1EA162BC6059600AF3360 /* PetManager.swift in Sources */,
 				23A1EA0B2BC5FD8E00AF3360 /* AddPetView.swift in Sources */,
+				23A1EA202BC9B92B00AF3360 /* MedicineListView.swift in Sources */,
+				23A1EA222BC9B97900AF3360 /* Medicine.swift in Sources */,
 				23A1E9E82BC31B1300AF3360 /* AppDelegate.swift in Sources */,
 				23A1EA062BC5FBFD00AF3360 /* PetsList.swift in Sources */,
 				23A1E9F52BC3272100AF3360 /* RootView.swift in Sources */,
 				23A1E9D82BC319AA00AF3360 /* ContentView.swift in Sources */,
 				23A1E9F12BC31E1E00AF3360 /* LoginView.swift in Sources */,
 				23A1EA1E2BC9B65600AF3360 /* PetzInitialControl.swift in Sources */,
+				23A1EA242BC9BA0C00AF3360 /* MedicineManager.swift in Sources */,
 				23A1E9D62BC319AA00AF3360 /* PetzCareApp.swift in Sources */,
 				23A1EA092BC5FCD900AF3360 /* Pet.swift in Sources */,
+				23A1EA262BC9C58400AF3360 /* AddMedicine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
