@@ -25,9 +25,9 @@ struct AuthDataResultModel {
     }
 }
 
-final class FirebAuth {
+final class AuthorizationManager {
     
-    static let shared = FirebAuth()
+    static let shared = AuthorizationManager()
     private init() {}
     
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {

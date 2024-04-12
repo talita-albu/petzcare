@@ -21,7 +21,7 @@ final class PetViewModel: ObservableObject {
     @Published var newPet = Pet(id: "", name: "", birthDate: Date(), species: "dog", gender: "male", userID: "0")
     
     func loadCurentUser() throws {
-        self.user = try FirebAuth.shared.getAuthenticatedUser()
+        self.user = try AuthorizationManager.shared.getAuthenticatedUser()
     }
     
     func loadPets() throws {
@@ -138,17 +138,17 @@ struct PetsList: View {
                         getAlert()
                     })
                     
-                    NavigationLink {
-                        SettingsView(showSignInView: $showSignInView)
-                    } label: {
-                        Text("Settings")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(height: 55)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.indigo)
-                            .cornerRadius(10)
-                    }
+//                    NavigationLink {
+//                        SettingsView(showSignInView: $showSignInView)
+//                    } label: {
+//                        Text("Settings")
+//                            .font(.headline)
+//                            .foregroundColor(.white)
+//                            .frame(height: 55)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color.indigo)
+//                            .cornerRadius(10)
+//                    }
                     
                 }.padding()
             }

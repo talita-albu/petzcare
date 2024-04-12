@@ -13,7 +13,7 @@
 		23A1E9DD2BC319AB00AF3360 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23A1E9DC2BC319AB00AF3360 /* Preview Assets.xcassets */; };
 		23A1E9E52BC31A9500AF3360 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 23A1E9E42BC31A9500AF3360 /* FirebaseAuth */; };
 		23A1E9E82BC31B1300AF3360 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9E72BC31B1300AF3360 /* AppDelegate.swift */; };
-		23A1E9EA2BC31BB100AF3360 /* FirebAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9E92BC31BB100AF3360 /* FirebAuth.swift */; };
+		23A1E9EA2BC31BB100AF3360 /* AuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9E92BC31BB100AF3360 /* AuthorizationManager.swift */; };
 		23A1E9F12BC31E1E00AF3360 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9F02BC31E1E00AF3360 /* LoginView.swift */; };
 		23A1E9F52BC3272100AF3360 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9F42BC3272100AF3360 /* RootView.swift */; };
 		23A1E9F72BC3298400AF3360 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1E9F62BC3298400AF3360 /* SettingsView.swift */; };
@@ -28,6 +28,7 @@
 		23A1EA122BC6024500AF3360 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 23A1EA112BC6024500AF3360 /* FirebaseFirestore */; };
 		23A1EA142BC6024500AF3360 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 23A1EA132BC6024500AF3360 /* FirebaseFirestoreSwift */; };
 		23A1EA162BC6059600AF3360 /* PetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA152BC6059600AF3360 /* PetManager.swift */; };
+		23A1EA1E2BC9B65600AF3360 /* PetzInitialControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1EA1D2BC9B65600AF3360 /* PetzInitialControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +38,7 @@
 		23A1E9D92BC319AB00AF3360 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		23A1E9DC2BC319AB00AF3360 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		23A1E9E72BC31B1300AF3360 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		23A1E9E92BC31BB100AF3360 /* FirebAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebAuth.swift; sourceTree = "<group>"; };
+		23A1E9E92BC31BB100AF3360 /* AuthorizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationManager.swift; sourceTree = "<group>"; };
 		23A1E9F02BC31E1E00AF3360 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		23A1E9F42BC3272100AF3360 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		23A1E9F62BC3298400AF3360 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -49,6 +50,7 @@
 		23A1EA082BC5FCD900AF3360 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		23A1EA0A2BC5FD8E00AF3360 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		23A1EA152BC6059600AF3360 /* PetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetManager.swift; sourceTree = "<group>"; };
+		23A1EA1D2BC9B65600AF3360 /* PetzInitialControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetzInitialControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				23A1E9D72BC319AA00AF3360 /* ContentView.swift */,
 				23A1E9D92BC319AB00AF3360 /* Assets.xcassets */,
 				23A1E9DB2BC319AB00AF3360 /* Preview Content */,
+				23A1EA1D2BC9B65600AF3360 /* PetzInitialControl.swift */,
 			);
 			path = PetzCare;
 			sourceTree = "<group>";
@@ -114,7 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				23A1E9E72BC31B1300AF3360 /* AppDelegate.swift */,
-				23A1E9E92BC31BB100AF3360 /* FirebAuth.swift */,
+				23A1E9E92BC31BB100AF3360 /* AuthorizationManager.swift */,
 				23A1E9FB2BC3544A00AF3360 /* GoogleSigninBtn.swift */,
 				23A1EA022BC355B100AF3360 /* +View.swift */,
 				23A1EA152BC6059600AF3360 /* PetManager.swift */,
@@ -240,7 +243,7 @@
 				23A1E9F72BC3298400AF3360 /* SettingsView.swift in Sources */,
 				23A1E9FC2BC3544A00AF3360 /* GoogleSigninBtn.swift in Sources */,
 				23A1EA032BC355B100AF3360 /* +View.swift in Sources */,
-				23A1E9EA2BC31BB100AF3360 /* FirebAuth.swift in Sources */,
+				23A1E9EA2BC31BB100AF3360 /* AuthorizationManager.swift in Sources */,
 				23A1EA162BC6059600AF3360 /* PetManager.swift in Sources */,
 				23A1EA0B2BC5FD8E00AF3360 /* AddPetView.swift in Sources */,
 				23A1E9E82BC31B1300AF3360 /* AppDelegate.swift in Sources */,
@@ -248,6 +251,7 @@
 				23A1E9F52BC3272100AF3360 /* RootView.swift in Sources */,
 				23A1E9D82BC319AA00AF3360 /* ContentView.swift in Sources */,
 				23A1E9F12BC31E1E00AF3360 /* LoginView.swift in Sources */,
+				23A1EA1E2BC9B65600AF3360 /* PetzInitialControl.swift in Sources */,
 				23A1E9D62BC319AA00AF3360 /* PetzCareApp.swift in Sources */,
 				23A1EA092BC5FCD900AF3360 /* Pet.swift in Sources */,
 			);

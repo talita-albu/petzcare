@@ -14,12 +14,12 @@ struct RootView: View {
         ZStack {
             if !showSignInView {
                 NavigationStack {
-                    PetsList(showSignInView: $showSignInView)
+                    PetzInitialControl(showSignInView: $showSignInView)
                 }
             }
         }
         .onAppear{
-            let authUser = try? FirebAuth.shared.getAuthenticatedUser()
+            let authUser = try? AuthorizationManager.shared.getAuthenticatedUser()
             self.showSignInView = authUser == nil
         }
         .fullScreenCover(isPresented: $showSignInView){

@@ -23,7 +23,7 @@ final class SignInEmailViewModel: ObservableObject {
             throw AuthenticationError.notPassedInformationToLog("Email and Password must be valid.")
         }
         
-        let _ = try await FirebAuth.shared.createUser(email: email, password: password)
+        let _ = try await AuthorizationManager.shared.createUser(email: email, password: password)
     }
     
     func signIn() async throws {
@@ -33,7 +33,7 @@ final class SignInEmailViewModel: ObservableObject {
             throw AuthenticationError.notPassedInformationToLog("Email and Password must be valid.")
         }
 
-        let _ = try await FirebAuth.shared.signInUser(email: email, password: password)
+        let _ = try await AuthorizationManager.shared.signInUser(email: email, password: password)
     }
 }
 
@@ -110,7 +110,7 @@ struct LoginView: View {
                 .padding()
             
             GoogleSiginBtn {
-                FirebAuth.shared.signinWithGoogle(presenting: getRootViewController()) {error in
+                AuthorizationManager.shared.signinWithGoogle(presenting: getRootViewController()) {error in
                     if let error = error {
                         viewModel.showAlert = true
                         viewModel.alertTitle = "Attention"
