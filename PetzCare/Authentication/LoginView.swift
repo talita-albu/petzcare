@@ -43,6 +43,13 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
+            Image("petz")
+                .resizable()
+                .font(.largeTitle)
+                .bold()
+                .symbolRenderingMode(.monochrome)
+                .scaledToFit()
+            
             TextField("Email...", text: $viewModel.email)
                 .padding()
                 .background(Color.gray.opacity(0.4))
@@ -118,7 +125,7 @@ struct LoginView: View {
             
         }
         .padding()
-        .navigationTitle("Bem Vindo")
+        .navigationTitle("Petz Care")
     }
     
     func getAlert() -> Alert {

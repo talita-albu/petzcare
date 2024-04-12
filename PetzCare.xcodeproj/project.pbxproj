@@ -91,6 +91,7 @@
 				23A1EA072BC5FCCE00AF3360 /* DataBase */,
 				23A1EA042BC5FBE800AF3360 /* Pets */,
 				23A1E9FA2BC3540900AF3360 /* Info.plist */,
+				23A1E9F42BC3272100AF3360 /* RootView.swift */,
 				23A1E9ED2BC31DD700AF3360 /* Authentication */,
 				23A1E9E62BC31B0500AF3360 /* Helper */,
 				23A1E9D52BC319AA00AF3360 /* PetzCareApp.swift */,
@@ -125,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				23A1E9F02BC31E1E00AF3360 /* LoginView.swift */,
-				23A1E9F42BC3272100AF3360 /* RootView.swift */,
 				23A1E9F62BC3298400AF3360 /* SettingsView.swift */,
 			);
 			path = Authentication;

@@ -40,10 +40,9 @@ struct PetsList: View {
     @Binding var showSignInView: Bool
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack {
                 List(viewModel.pets) { pet in
-                    
                     HStack {
                         Image(pet.type)
                             .resizable()
@@ -59,13 +58,47 @@ struct PetsList: View {
                             Text(pet.type)
                         }
                         Spacer()
-                        Image(systemName: "ellipsis")
-                            .resizable()
-                            .symbolRenderingMode(.monochrome)
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-
-
+                        Button {
+                            newPet.id = pet.id
+                            newPet.gender = pet.gender
+                            newPet.name = pet.name
+                            newPet.type = pet.type
+                            newPet.userID = pet.userID
+                            newPet.birthDate = pet.birthDate
+                            self.showingAddPetView.toggle()
+                        } label: {
+                            Image(systemName: "pencil")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(height: 30)
+                                .frame(width: 30)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }.sheet(isPresented: $showingAddPetView) {
+                            AddPetView(showingAddPetView: $showingAddPetView, newPet: $newPet)
+                                .onDisappear {
+                                    if !self.newPet.name.isEmpty {
+                                        //                                        do {
+                                        //                                            try viewModel.loadCurentUser()
+                                        //                                            try PetManager.shared.savePet(newPet: self.newPet, user: viewModel.user?.uid ?? "0")
+                                        //                                        } catch {
+                                        //                                            viewModel.alertTitle = "Alert"
+                                        //                                            viewModel.alertMessage = "Pet not saved"
+                                        //                                            viewModel.showAlert = true
+                                        //                                        }
+                                        
+                                        do {
+                                            try viewModel.loadPets()
+                                        } catch {
+                                            viewModel.alertTitle = "Alert"
+                                            viewModel.alertMessage = "Pets not loaded"
+                                            viewModel.showAlert = true
+                                        }
+                                    }
+                                }
+                        }.alert(isPresented: $viewModel.showAlert, content: {
+                            getAlert()
+                        })
                     }
                     .padding(.bottom, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -111,8 +144,20 @@ struct PetsList: View {
                         getAlert()
                     })
                     
-                    Button {
-                        self.showingSettingsView.toggle()
+                    //                    Button {
+                    //                        self.showingSettingsView.toggle()
+                    //                    } label: {
+                    //                        Text("Settings")
+                    //                            .font(.headline)
+                    //                            .foregroundColor(.white)
+                    //                            .frame(height: 55)
+                    //                            .frame(maxWidth: .infinity)
+                    //                            .background(Color.indigo)
+                    //                            .cornerRadius(10)
+                    //                    }
+                    
+                    NavigationLink {
+                        SettingsView(showSignInView: $showSignInView)
                     } label: {
                         Text("Settings")
                             .font(.headline)
@@ -122,12 +167,10 @@ struct PetsList: View {
                             .background(Color.indigo)
                             .cornerRadius(10)
                     }
+                    
                 }.padding()
             }
             .navigationTitle("Pet Registry")
-            .navigationDestination(isPresented: $showingSettingsView) {
-                SettingsView(showingSettingsView: $showingSettingsView)
-            }
         }
         .onAppear {
             do {

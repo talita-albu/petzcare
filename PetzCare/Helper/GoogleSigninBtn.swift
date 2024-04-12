@@ -27,7 +27,6 @@ struct GoogleSiginBtn: View {
                         Circle()
                     )
             }
-            
         }
         .frame(width: 50, height: 50)
     }
